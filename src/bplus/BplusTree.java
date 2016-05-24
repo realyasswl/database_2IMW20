@@ -7,7 +7,7 @@ public class BplusTree {
 	private BplusTree() {
 		super();
 	}
-
+/**when n=5000000, we experienced an OOM error*/
 	public static BplusTree build(Iterable iter, Command comm) {
 		BplusTree tree = new BplusTree();
 
@@ -72,7 +72,7 @@ public class BplusTree {
 	}
 
 	public void insert(Comparable v, Object record) {
-		System.out.println("insert:" + v);
+//		System.out.println("insert:" + v);
 		if (root == null || root.getKeyList() == null || root.getKeyList().size() == 0) {
 			root = new Node();
 			root.setLeaf(true);
@@ -119,7 +119,7 @@ public class BplusTree {
 
 	// this function apply only to leaf nodes
 	private void splitLeafNode(Node n) {
-		System.out.println("splitLeafNode");
+//		System.out.println("splitLeafNode");
 		Node newNode = new Node();
 		newNode.setLeaf(true);
 		newNode.setRoot(false);
@@ -135,7 +135,7 @@ public class BplusTree {
 		insertInParent(n, newNode.getKeyList().get(0), newNode);
 	}
 
-	public void insertInLeaf(Node n, Comparable v, Object record) {
+	private void insertInLeaf(Node n, Comparable v, Object record) {
 		if (v.compareTo(n.getKeyList().get(0)) < 0) {
 			n.getKeyList().add(0, v);
 			n.getChildren().add(0, record);
@@ -153,7 +153,7 @@ public class BplusTree {
 		}
 	}
 
-	public void insertInParent(Node n, Comparable vprime, Node nprime) {
+	private void insertInParent(Node n, Comparable vprime, Node nprime) {
 		if (n.isRoot()) {
 			// TODO something could be wrong here, I will change if necessary
 			// after running test
@@ -183,7 +183,7 @@ public class BplusTree {
 	}
 
 	private void splitNonLeafNode(Node p) {
-		System.out.println("splitNonLeafNode");
+//		System.out.println("splitNonLeafNode");
 		Node pprime = new Node();
 		pprime.setLeaf(false);
 		pprime.setRoot(false);

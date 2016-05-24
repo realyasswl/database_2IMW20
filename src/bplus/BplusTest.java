@@ -6,14 +6,21 @@ import java.util.List;
 import java.util.Random;
 
 public class BplusTest {
+	static Integer n = 3000000;
+	static Integer[] array = new Integer[n];
+	static {
+		for (int i = 0; i < n; i++) {
+			array[i] = i;
+		}
+	}
+
 	public static void main(String[] s) {
-//		int n = 20;
-//		int[] array = new int[n];
-//		for (int i = 0; i < n; i++) {
-//			array[i] = i;
-//		}
-//		ShuffleArray(array);
-		int[] array={5,14,12,0,8,13,10,3,17,1,9,6,19,7,18};
+		testBinarySearch();
+		buildBplusAndTest();
+	}
+
+	private static void buildBplusAndTest() {
+		ShuffleArray(array);
 		List<TestForm> iter = new LinkedList<TestForm>();
 		DecimalFormat fmt = new DecimalFormat("0000");
 		for (int i : array) {
@@ -22,12 +29,57 @@ public class BplusTest {
 			f.setMessage(fmt.format(i));
 			iter.add(f);
 		}
+		long ts = System.currentTimeMillis();
 		BplusTree tree = BplusTree.build(iter, new TestCommand());
-		tree.printAllNode();
-		Wrapped w = tree.find(5);
+		// tree.printAllNode();
+		long spent = System.currentTimeMillis() - ts;
+		System.out.println("bplus tree built after " + spent);
+		ts = System.currentTimeMillis();
+		for (Integer i = 0; i < n; i++) {
+			Wrapped w = tree.find(i);
+		}
+		spent = System.currentTimeMillis() - ts;
+		System.out.println(spent);
 	}
 
-	private static void ShuffleArray(int[] array) {
+	private static void testBinarySearch() {
+		long ts = System.currentTimeMillis();
+		for (Integer i = 0; i < n; i++) {
+			int index = binarySearch(array, i);
+		}
+		long spent = System.currentTimeMillis() - ts;
+		System.out.println(spent);
+	}
+
+	/** array is in a ascending order */
+	private static int binarySearch(Comparable[] array, Comparable a) {
+		double d = 1d / 2;
+		int index = (int) (array.length * d);
+		double step = 0;
+		int iteration = 1;
+		while (index > 0 && index < array.length) {
+			iteration++;
+			step = 1d / Math.pow(2, iteration);
+			int result = array[index].compareTo(a);
+			if (result == 0) {
+				return index;
+			} else if (result > 0) {
+				d = d - step;
+			} else {
+				d = d + step;
+			}
+			index = (int) (array.length * d);
+		}
+
+		int result = array[index].compareTo(a);
+		if (result == 0) {
+			return index;
+		} else {
+			return -1;
+		}
+	}
+
+	private static void ShuffleArray(Integer[] array) {
 		int index;
 		Random random = new Random();
 		for (int i = array.length - 1; i > 0; i--) {
