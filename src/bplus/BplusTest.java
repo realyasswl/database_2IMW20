@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BplusTest {
-	static Integer n = 3000000;
+	static Integer n = 300000;
 	static Integer[] array = new Integer[n];
 	static {
 		for (int i = 0; i < n; i++) {
