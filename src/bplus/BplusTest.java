@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BplusTest {
-	static Integer n = 300000;
+	static Integer n = 1000000;
 	static Integer[] array = new Integer[n];
 	static {
 		for (int i = 0; i < n; i++) {
@@ -39,7 +39,7 @@ public class BplusTest {
 			Wrapped w = tree.find(i);
 		}
 		spent = System.currentTimeMillis() - ts;
-		System.out.println(spent);
+		System.out.println("time cost by bplus tree:"+spent);
 	}
 
 	private static void testBinarySearch() {
@@ -48,7 +48,7 @@ public class BplusTest {
 			int index = binarySearch(array, i);
 		}
 		long spent = System.currentTimeMillis() - ts;
-		System.out.println(spent);
+		System.out.println("time cost by binary search:"+spent);
 	}
 
 	/** array is in a ascending order */
