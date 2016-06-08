@@ -1,14 +1,23 @@
 package mq;
 
+import java.util.BitSet;
+
 import org.json.simple.JSONArray;
 
-/** Use JSONArray as relation */
+/**
+ * Use JSONArray as relation. The smaller set will be referred as R, and larger
+ * set will be referred as S. There is no qid in the probe set, so we use a
+ * array/list to record qid just for probe set
+ */
 public abstract class AbstractMQJoin {
 
 	int mod = 200;
 	int sid = 1;
+	/** aka R */
 	JSONArray smallerSet;
+	/** aka S */
 	JSONArray largerSet;
+	BitSet[] probeQID;
 	String joinKey;
 
 	Object[] bucketArray = new Object[mod];
@@ -25,8 +34,8 @@ public abstract class AbstractMQJoin {
 
 	/**
 	 * <p>
-	 * we want to test the profermance of join query, and the standard ways is
-	 * as follows:
+	 * we want to test the profermance of join query, and the standard statement
+	 * is as follows:
 	 * </p>
 	 * <b>select r,*,s.* from r, s where r.value="" and s.value="" and
 	 * r.id1=s.id1;</b>
@@ -40,7 +49,7 @@ public abstract class AbstractMQJoin {
 	 * </p>
 	 * 
 	 */
-	public void query() {
+	public void query(String rcond,String scond) {
 
 	}
 
@@ -48,5 +57,6 @@ public abstract class AbstractMQJoin {
 		this.smallerSet = smallerSet;
 		this.largerSet = largerSet;
 		this.joinKey = joinKey;
+		this.probeQID = new BitSet[largerSet.size()];
 	};
 }

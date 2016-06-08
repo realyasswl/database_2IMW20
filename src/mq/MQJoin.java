@@ -13,6 +13,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * all is copied from MQJoinAdvanced, some parts need to be modified to exactly
+ * follow the algorithm described in paper
+ */
 public class MQJoin extends BaseMQJoin {
 
 	MQJoin(JSONArray smallerSet, JSONArray largerSet, String joinKey) {
