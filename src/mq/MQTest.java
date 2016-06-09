@@ -27,11 +27,10 @@ public class MQTest {
 			l = (JSONArray) obj1;
 			AbstractMQJoin mq = new MQJoinAdvanced(s, l, joinKey);
 			mq.build(s, joinKey);
-			for(int i=0;i<5000;i++){
+			for (int i = 0; i < 5000; i++) {
 				// TODO: change 0000 to a random number
-				mq.query("value1_" + rand1.nextInt(common.Constants.smallerSize), 
-						"value2_" + rand2.nextInt(common.Constants.largerSize), 
-						i);
+				mq.query("value1", "value1_" + rand1.nextInt(common.Constants.smallerSize), "value2",
+						"value2_" + rand2.nextInt(common.Constants.largerSize), i);
 			}
 			mq.probe(l, joinKey);
 			System.out.println("done");

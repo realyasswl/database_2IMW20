@@ -51,28 +51,27 @@ public abstract class AbstractMQJoin {
 	 * </p>
 	 * 
 	 */
-	public void query(String rcond, String scond, int seqnr) {
-		System.out.println(seqnr+"|rcond:" + rcond + "|scond:" + scond);
-		if (rcond != null) {
+	public void query(String rkey,String rvalue, String skey,String svalue, int seqnr) {
+		System.out.println(seqnr+"|"+rkey+":" + rvalue + "|"+skey+":" + svalue);
+		if (rvalue != null) {
 			for (int i = 0; i < smallerSet.size(); i++) {
 				JSONObject tuple = (JSONObject) smallerSet.get(i);
-				if (rcond.equals(tuple.get("value1"))) {
+				if (rvalue.equals(tuple.get(rkey))) {
 					// System.out.println(rcond+" found");
 					smallerQID[i].set(seqnr);
 				}
 			}
 		}
 
-		if (scond != null) {
+		if (svalue != null) {
 			for (int i = 0; i < largerSet.size(); i++) {
 				JSONObject tuple = (JSONObject) largerSet.get(i);
-				if (scond.equals(tuple.get("value2"))) {
+				if (svalue.equals(tuple.get(skey))) {
 					// System.out.println(scond+" found");
 					probeQID[i].set(seqnr);
 				}
 			}
 		}
-
 	}
 
 	BitSet[] geneBitSetArray(int size) {
@@ -88,7 +87,6 @@ public abstract class AbstractMQJoin {
 		this.largerSet = largerSet;
 		this.joinKey = joinKey;
 		this.smallerQID = geneBitSetArray(smallerSet.size());
-
 		this.probeQID = geneBitSetArray(largerSet.size());
 	};
 }
