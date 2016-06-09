@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
  */
 public abstract class AbstractMQJoin {
 
-	int mod = 200;
+	int mod = common.Constants.mod;
 	int sid = 1;
 	/** aka R */
 	JSONArray smallerSet;

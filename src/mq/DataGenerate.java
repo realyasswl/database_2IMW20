@@ -16,8 +16,8 @@ public class DataGenerate {
 	// TODO currently use org.json.JSONArray, should switch to org.json.simple.*
 	// later.
 	public static void generateData() {
-		int number1 = 100;
-		int number2 = 2000;
+		int number1 = common.Constants.smallerSize;
+		int number2 = common.Constants.largerSize;
 //		DecimalFormat fmt = new DecimalFormat("0000");
 		JSONArray tupleList1 = new JSONArray();
 		for (int i = 0; i < number1; i++) {

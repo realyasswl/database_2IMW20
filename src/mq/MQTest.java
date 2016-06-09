@@ -29,8 +29,8 @@ public class MQTest {
 			mq.build(s, joinKey);
 			for(int i=0;i<1000;i++){
 				// TODO: change 0000 to a random number
-				mq.query("value1_" + rand1.nextInt(100) + 1, 
-						"value2_" + rand2.nextInt(2000) + 1, 
+				mq.query("value1_" + rand1.nextInt(common.Constants.smallerSize) + 1, 
+						"value2_" + rand2.nextInt(common.Constants.largerSize) + 1, 
 						i);
 			}
 			mq.probe(l, joinKey);
