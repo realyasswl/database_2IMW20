@@ -1,6 +1,7 @@
 package mq;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,7 +69,6 @@ public class MQJoinAdvanced extends BaseMQJoin {
 		JSONArray otherGroup = new JSONArray();
 		JSONArray keyMatchGroup = new JSONArray();
 		HashBucketComparator c = new HashBucketComparator();
-		// while (list.size() > 0) {
 		otherGroup.clear();
 		keyMatchGroup.clear();
 		for (int index = 0; index < list.size(); index++) {
@@ -77,13 +77,23 @@ public class MQJoinAdvanced extends BaseMQJoin {
 			List<HashBucket> bucketList = computeBucketAddress(tuple, key);
 			// here is a little different from algorithm described in paper
 			// since we've already sorted the bucket list for each key, we
-			// can do a binary search to speed up
-
-			// TODO
+			// can do a binary search to speed up, and we have the bucket list
+			// instead of just a bucket which has pointer to the next bucket, we
+			// can do this in one loop
 
 			HashBucket bucket = bucketList.get(Collections.binarySearch(bucketList, new HashBucket(id, sid), c));
-			bucket.getQidSet().intersects(super.probeQID[index]);
+			BitSet bs1 = bucket.getQidSet();
+			BitSet bs2 = super.probeQID[index];
+			BitSet result = new BitSet(bs1.size());
+//			System.out.println("index=" + index + "|id:" + id + "|has:" + hash(id) + "|bs1:" + bs1.toString() + "|bs2:"
+//					+ bs2.toString());
+			result.or(bs1);
+			result.and(bs2);
+			if (!result.isEmpty()) {
+				System.out.println(result.toString() + "|R:" + bucket.getRecordPtr().toString() + "|S:"
+						+ super.largerSet.get(index).toString());
+			}
+
 		}
-		// }
 	}
 }

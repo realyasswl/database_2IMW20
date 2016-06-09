@@ -52,10 +52,12 @@ public abstract class AbstractMQJoin {
 	 * 
 	 */
 	public void query(String rcond, String scond, int seqnr) {
+		System.out.println(seqnr+"|rcond:" + rcond + "|scond:" + scond);
 		if (rcond != null) {
 			for (int i = 0; i < smallerSet.size(); i++) {
 				JSONObject tuple = (JSONObject) smallerSet.get(i);
 				if (rcond.equals(tuple.get("value1"))) {
+					// System.out.println(rcond+" found");
 					smallerQID[i].set(seqnr);
 				}
 			}
@@ -65,6 +67,7 @@ public abstract class AbstractMQJoin {
 			for (int i = 0; i < largerSet.size(); i++) {
 				JSONObject tuple = (JSONObject) largerSet.get(i);
 				if (scond.equals(tuple.get("value2"))) {
+					// System.out.println(scond+" found");
 					probeQID[i].set(seqnr);
 				}
 			}
