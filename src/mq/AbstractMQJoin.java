@@ -34,7 +34,7 @@ public abstract class AbstractMQJoin {
 
 	/**
 	 * <p>
-	 * we want to test the profermance of join query, and the standard statement
+	 * we want to test the performance of join query, and the standard statement
 	 * is as follows:
 	 * </p>
 	 * <b>select r,*,s.* from r, s where r.value="" and s.value="" and
@@ -49,7 +49,23 @@ public abstract class AbstractMQJoin {
 	 * </p>
 	 * 
 	 */
-	public void query(String rcond,String scond) {
+	public void query(String rcond, String scond, int seqnr) {
+		// generate QID for each tuple in the data sets
+		// for s: add QID to probeQID bitset
+
+		// Loop through r
+		for (int i = 0; i < bucketArray.length; i++) {
+			if (true == true) {
+				// add QID to HashBucket
+			}
+		}
+		
+		// Loop through s
+		for (int i = 0; i < bucketArray.length; i++) {
+			if (true == true) {
+				probeQID[i].set(seqnr);
+			}
+		}
 
 	}
 

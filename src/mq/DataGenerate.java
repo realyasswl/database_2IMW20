@@ -26,7 +26,6 @@ public class DataGenerate {
 			value.put("value1", "value1_" + fmt.format(i));
 			tupleList1.put(value);
 		}
-		
 
 		JSONArray tupleList2 = new JSONArray();
 		for (int i = 0; i < number2; i++) {
@@ -48,12 +47,12 @@ public class DataGenerate {
 			writer1 = new FileWriter(file1);
 			writer1.write("[");
 			for (int i = 0; i < tupleList.length(); i++) {
-				if(i>0){
-					writer1.write(",\r\n");	
+				if (i > 0) {
+					writer1.write(",\r\n");
 				}
 				JSONObject row = tupleList.getJSONObject(i);
 				writer1.write(row.toString());
-				
+
 			}
 			writer1.write("]");
 			writer1.flush();

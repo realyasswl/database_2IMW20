@@ -1,25 +1,19 @@
 package mq;
 
-import java.io.FileNotFoundException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-
-/**this version of MQJoin has some modifications */
+/** this version of MQJoin has some modifications */
 public class MQJoinAdvanced extends BaseMQJoin {
 
 	MQJoinAdvanced(JSONArray smallerSet, JSONArray largerSet, String joinKey) {
 		super(smallerSet, largerSet, joinKey);
 	}
+
 	List<HashBucket> computeBucketAddress(JSONObject tuple, String key) {
 		int hashKey = hash((long) tuple.get(key));
 		List<HashBucket> list = (List<HashBucket>) bucketArray[hashKey];
@@ -29,6 +23,7 @@ public class MQJoinAdvanced extends BaseMQJoin {
 		}
 		return list;
 	}
+
 	/**
 	 * <p>
 	 * Implement the build phase described in page 482 MQJoin actually skip the
@@ -82,11 +77,11 @@ public class MQJoinAdvanced extends BaseMQJoin {
 				// here is a little different from algorithm described in paper
 				// since we've already sorted the bucket list for each key, we
 				// can do a binary search to speed up
-				
+
 				// TODO
 
 				HashBucket bucket = bucketList.get(Collections.binarySearch(bucketList, new HashBucket(id, sid), c));
-
+//				bucket.getQidSet().intersects(tuple.QID);
 			}
 		}
 	}
