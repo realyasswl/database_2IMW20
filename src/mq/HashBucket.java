@@ -31,7 +31,7 @@ public class HashBucket {
 	/** points the next bucket in case of overflow */
 	private HashBucket nextBucket;
 	/** points to the set of query IDs for the tuple are located */
-//	private QIDSet qidSet;
+	// private QIDSet qidSet;
 	private BitSet qidSet;
 
 	public boolean isLck() {

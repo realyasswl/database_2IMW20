@@ -1,17 +1,11 @@
 package mq;
 
-import java.io.FileNotFoundException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /** this version of MQJoin has some modifications */
 public class MQJoinAdvanced extends BaseMQJoin {
@@ -74,22 +68,22 @@ public class MQJoinAdvanced extends BaseMQJoin {
 		JSONArray otherGroup = new JSONArray();
 		JSONArray keyMatchGroup = new JSONArray();
 		HashBucketComparator c = new HashBucketComparator();
-		while (list.size() > 0) {
-			otherGroup.clear();
-			keyMatchGroup.clear();
-			for (int index = 0; index < list.size(); index++) {
-				JSONObject tuple = (JSONObject) list.get(index);
-				java.lang.Long id = (Long) tuple.get(key);
-				List<HashBucket> bucketList = computeBucketAddress(tuple, key);
-				// here is a little different from algorithm described in paper
-				// since we've already sorted the bucket list for each key, we
-				// can do a binary search to speed up
+		// while (list.size() > 0) {
+		otherGroup.clear();
+		keyMatchGroup.clear();
+		for (int index = 0; index < list.size(); index++) {
+			JSONObject tuple = (JSONObject) list.get(index);
+			java.lang.Long id = (Long) tuple.get(key);
+			List<HashBucket> bucketList = computeBucketAddress(tuple, key);
+			// here is a little different from algorithm described in paper
+			// since we've already sorted the bucket list for each key, we
+			// can do a binary search to speed up
 
-				// TODO
+			// TODO
 
-				HashBucket bucket = bucketList.get(Collections.binarySearch(bucketList, new HashBucket(id, sid), c));
-
-			}
+			HashBucket bucket = bucketList.get(Collections.binarySearch(bucketList, new HashBucket(id, sid), c));
+			bucket.getQidSet().intersects(super.probeQID[index]);
 		}
+		// }
 	}
 }

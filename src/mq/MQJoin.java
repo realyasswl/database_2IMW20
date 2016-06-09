@@ -1,17 +1,11 @@
 package mq;
 
-import java.io.FileNotFoundException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  * all is copied from MQJoinAdvanced, some parts need to be modified to exactly

@@ -16,8 +16,8 @@ public class DataGenerate {
 	// TODO currently use org.json.JSONArray, should switch to org.json.simple.*
 	// later.
 	public static void generateData() {
-		int number1 = 1000;
-		int number2 = 200000;
+		int number1 = 100;
+		int number2 = 2000;
 //		DecimalFormat fmt = new DecimalFormat("0000");
 		JSONArray tupleList1 = new JSONArray();
 		for (int i = 0; i < number1; i++) {
@@ -27,7 +27,6 @@ public class DataGenerate {
 			value.put("value1", "value1_" + i);
 			tupleList1.put(value);
 		}
-		
 
 		JSONArray tupleList2 = new JSONArray();
 		for (int i = 0; i < number2; i++) {
@@ -50,12 +49,12 @@ public class DataGenerate {
 			writer1 = new FileWriter(file1);
 			writer1.write("[");
 			for (int i = 0; i < tupleList.length(); i++) {
-				if(i>0){
-					writer1.write(",\r\n");	
+				if (i > 0) {
+					writer1.write(",\r\n");
 				}
 				JSONObject row = tupleList.getJSONObject(i);
 				writer1.write(row.toString());
-				
+
 			}
 			writer1.write("]");
 			writer1.flush();

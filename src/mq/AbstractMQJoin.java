@@ -3,6 +3,7 @@ package mq;
 import java.util.BitSet;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  * Use JSONArray as relation. The smaller set will be referred as R, and larger
@@ -35,7 +36,7 @@ public abstract class AbstractMQJoin {
 
 	/**
 	 * <p>
-	 * we want to test the profermance of join query, and the standard statement
+	 * we want to test the performance of join query, and the standard statement
 	 * is as follows:
 	 * </p>
 	 * <b>select r,*,s.* from r, s where r.value="" and s.value="" and
@@ -50,15 +51,33 @@ public abstract class AbstractMQJoin {
 	 * </p>
 	 * 
 	 */
-	public void query(String rcond,String scond) {
+	public void query(String rcond, String scond, int seqnr) {
+		if (rcond != null) {
+			for (int i = 0; i < smallerSet.size(); i++) {
+				JSONObject tuple = (JSONObject) smallerSet.get(i);
+				if (rcond == tuple.get("value1")) {
+					smallerQID[i].set(seqnr);
+					System.out.println("Test1");
+				}
+			}
+		}
 
+		if (scond != null) {
+			for (int i = 0; i < largerSet.size(); i++) {
+				JSONObject tuple = (JSONObject) largerSet.get(i);
+				if (scond == tuple.get("value2")) {
+					probeQID[i].set(seqnr);
+					System.out.println("Test2");
+				}
+			}
+		}
 	}
 
 	public void set(JSONArray smallerSet, JSONArray largerSet, String joinKey) {
 		this.smallerSet = smallerSet;
 		this.largerSet = largerSet;
 		this.joinKey = joinKey;
-		this.smallerQID=new BitSet[smallerSet.size()];
+		this.smallerQID = new BitSet[smallerSet.size()];
 		this.probeQID = new BitSet[largerSet.size()];
 	};
 }
