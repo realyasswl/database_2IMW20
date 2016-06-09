@@ -50,6 +50,7 @@ public class MQJoinAdvanced extends BaseMQJoin {
 			List<HashBucket> bucketList = computeBucketAddress(tuple, key);
 
 			HashBucket bucket = new HashBucket(id, sid);
+			bucket.setQidSet(smallerQID[index]);
 			bucket.setRecordPtr(tuple);
 			bucketList.add(bucket);
 		}

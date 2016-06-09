@@ -17,6 +17,7 @@ public abstract class AbstractMQJoin {
 	JSONArray smallerSet;
 	/** aka S */
 	JSONArray largerSet;
+	BitSet[] smallerQID;
 	BitSet[] probeQID;
 	String joinKey;
 
@@ -73,6 +74,7 @@ public abstract class AbstractMQJoin {
 		this.smallerSet = smallerSet;
 		this.largerSet = largerSet;
 		this.joinKey = joinKey;
+		this.smallerQID=new BitSet[smallerSet.size()];
 		this.probeQID = new BitSet[largerSet.size()];
 	};
 }
