@@ -18,12 +18,13 @@ public class DataGenerate {
 	public static void generateData() {
 		int number1 = 1000;
 		int number2 = 200000;
-		DecimalFormat fmt = new DecimalFormat("0000");
+//		DecimalFormat fmt = new DecimalFormat("0000");
 		JSONArray tupleList1 = new JSONArray();
 		for (int i = 0; i < number1; i++) {
 			JSONObject value = new JSONObject();
 			value.put("id1", i);
-			value.put("value1", "value1_" + fmt.format(i));
+//			value.put("value1", "value1_" + fmt.format(i));
+			value.put("value1", "value1_" + i);
 			tupleList1.put(value);
 		}
 		
@@ -33,7 +34,8 @@ public class DataGenerate {
 			JSONObject value = new JSONObject();
 			// here we have column "id1" in dataset2 as the join key
 			value.put("id1", (int) (Math.random() * number1));
-			value.put("value2", "value2_" + fmt.format(i));
+//			value.put("value2", "value2_" + fmt.format(i));
+			value.put("value2", "value2_" + i);
 			value.put("id2", i);
 			tupleList2.put(value);
 		}
