@@ -55,9 +55,8 @@ public abstract class AbstractMQJoin {
 		if (rcond != null) {
 			for (int i = 0; i < smallerSet.size(); i++) {
 				JSONObject tuple = (JSONObject) smallerSet.get(i);
-				if (rcond == tuple.get("value1")) {
+				if (rcond.equals(tuple.get("value1"))) {
 					smallerQID[i].set(seqnr);
-					System.out.println("Test1");
 				}
 			}
 		}
@@ -65,9 +64,8 @@ public abstract class AbstractMQJoin {
 		if (scond != null) {
 			for (int i = 0; i < largerSet.size(); i++) {
 				JSONObject tuple = (JSONObject) largerSet.get(i);
-				if (scond == tuple.get("value2")) {
+				if (scond.equals(tuple.get("value2"))) {
 					probeQID[i].set(seqnr);
-					System.out.println("Test2");
 				}
 			}
 		}
