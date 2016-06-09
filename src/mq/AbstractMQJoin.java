@@ -71,13 +71,23 @@ public abstract class AbstractMQJoin {
 				}
 			}
 		}
+
+	}
+
+	BitSet[] geneBitSetArray(int size) {
+		BitSet[] r = new BitSet[size];
+		for (int i = 0; i < size; i++) {
+			r[i] = new BitSet();
+		}
+		return r;
 	}
 
 	public void set(JSONArray smallerSet, JSONArray largerSet, String joinKey) {
 		this.smallerSet = smallerSet;
 		this.largerSet = largerSet;
 		this.joinKey = joinKey;
-		this.smallerQID = new BitSet[smallerSet.size()];
-		this.probeQID = new BitSet[largerSet.size()];
+		this.smallerQID = geneBitSetArray(smallerSet.size());
+
+		this.probeQID = geneBitSetArray(largerSet.size());
 	};
 }
