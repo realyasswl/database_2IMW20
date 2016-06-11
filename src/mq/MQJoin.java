@@ -1,6 +1,7 @@
 package mq;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class MQJoin extends BaseMQJoin {
 			List<HashBucket> bucketList = computeBucketAddress(tuple, key);
 
 			HashBucket bucket = new HashBucket(id, sid);
-			bucket.setRecordPtr(tuple);
+			bucket.setRecordPtr(new Extended(tuple,new BitSet()));
 			bucketList.add(bucket);
 		}
 

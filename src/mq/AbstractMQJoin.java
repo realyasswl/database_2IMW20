@@ -1,9 +1,14 @@
 package mq;
 
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import bplus.BplusTree;
+import bplus.Wrapped;
 
 /**
  * Use JSONArray as relation. The smaller set will be referred as R, and larger
@@ -15,11 +20,11 @@ public abstract class AbstractMQJoin {
 	int mod = common.Constants.mod;
 	int sid = 1;
 	/** aka R */
-	JSONArray smallerSet;
+	List<Extended> smallerSet;
 	/** aka S */
-	JSONArray largerSet;
-	BitSet[] smallerQID;
-	BitSet[] probeQID;
+	List<Extended> largerSet;
+	// BitSet[] smallerQID;
+	// BitSet[] probeQID;
 	String joinKey;
 
 	Object[] bucketArray = new Object[mod];
@@ -29,10 +34,10 @@ public abstract class AbstractMQJoin {
 	}
 
 	/** use the smaller set to build */
-	public abstract void build(JSONArray list, String key);
+	public abstract void build(List<Extended> list, String key);
 
 	/** use the larger set to probe */
-	public abstract void probe(JSONArray list, String key);
+	public abstract void probe(List<Extended> list, String key);
 
 	/**
 	 * <p>
@@ -51,25 +56,39 @@ public abstract class AbstractMQJoin {
 	 * </p>
 	 * 
 	 */
-	public void query(String rkey,String rvalue, String skey,String svalue, int seqnr) {
-		System.out.println(seqnr+"|"+rkey+":" + rvalue + "|"+skey+":" + svalue);
+	public void query(String rkey, String rvalue, BplusTree rtree, String skey, String svalue, BplusTree stree,
+			int seqnr) {
 		if (rvalue != null) {
-			for (int i = 0; i < smallerSet.size(); i++) {
-				JSONObject tuple = (JSONObject) smallerSet.get(i);
-				if (rvalue.equals(tuple.get(rkey))) {
-					// System.out.println(rcond+" found");
-					smallerQID[i].set(seqnr);
+			if (rtree == null) {
+				for (int i = 0; i < smallerSet.size(); i++) {
+					Extended e = smallerSet.get(i);
+					JSONObject tuple = e.getObj();
+					if (rvalue.equals(tuple.get(rkey))) {
+						// System.out.println(rcond+" found");
+						e.getBs().set(seqnr);
+					}
 				}
+			} else {
+				Wrapped r = rtree.find(rvalue);
+				Extended e = (Extended) r.getC().getChildren().get(r.getI());
+				e.getBs().set(seqnr);
 			}
 		}
 
 		if (svalue != null) {
-			for (int i = 0; i < largerSet.size(); i++) {
-				JSONObject tuple = (JSONObject) largerSet.get(i);
-				if (svalue.equals(tuple.get(skey))) {
-					// System.out.println(scond+" found");
-					probeQID[i].set(seqnr);
+			if (stree == null) {
+				for (int i = 0; i < largerSet.size(); i++) {
+					Extended e = largerSet.get(i);
+					JSONObject tuple = e.getObj();
+					if (svalue.equals(tuple.get(skey))) {
+						// System.out.println(scond+" found");
+						e.getBs().set(seqnr);
+					}
 				}
+			} else {
+				Wrapped r = stree.find(svalue);
+				Extended e = (Extended) r.getC().getChildren().get(r.getI());
+				e.getBs().set(seqnr);
 			}
 		}
 	}
@@ -83,10 +102,19 @@ public abstract class AbstractMQJoin {
 	}
 
 	public void set(JSONArray smallerSet, JSONArray largerSet, String joinKey) {
-		this.smallerSet = smallerSet;
-		this.largerSet = largerSet;
+		this.smallerSet = new ArrayList<Extended>();
+		this.largerSet = new ArrayList<Extended>();
+		JSONObject o = null;
+		for (int i = 0; i < smallerSet.size(); i++) {
+			o = (JSONObject) smallerSet.get(i);
+			this.smallerSet.add(new Extended(o, new BitSet()));
+		}
+		for (int i = 0; i < largerSet.size(); i++) {
+			o = (JSONObject) largerSet.get(i);
+			this.largerSet.add(new Extended(o, new BitSet()));
+		}
 		this.joinKey = joinKey;
-		this.smallerQID = geneBitSetArray(smallerSet.size());
-		this.probeQID = geneBitSetArray(largerSet.size());
+		// this.smallerQID = geneBitSetArray(smallerSet.size());
+		// this.probeQID = geneBitSetArray(largerSet.size());
 	};
 }

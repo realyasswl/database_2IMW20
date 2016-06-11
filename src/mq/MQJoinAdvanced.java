@@ -44,15 +44,15 @@ public class MQJoinAdvanced extends BaseMQJoin {
 	 *            is the name of the column which is used to do hash calculation
 	 * 
 	 */
-	public void build(JSONArray list, String key) {
+	public void build(List<Extended> list, String key) {
 		for (int index = 0; index < list.size(); index++) {
-			JSONObject tuple = (JSONObject) list.get(index);
+			Extended rec= list.get(index);
+			JSONObject tuple =rec.getObj();
 			java.lang.Long id = (Long) tuple.get(key);
 			List<HashBucket> bucketList = computeBucketAddress(tuple, key);
 
 			HashBucket bucket = new HashBucket(id, sid);
-			bucket.setQidSet(smallerQID[index]);
-			bucket.setRecordPtr(tuple);
+			bucket.setRecordPtr(rec);
 			bucketList.add(bucket);
 		}
 
@@ -65,14 +65,11 @@ public class MQJoinAdvanced extends BaseMQJoin {
 		}
 	}
 
-	public void probe(JSONArray list, String key) {
-		JSONArray otherGroup = new JSONArray();
-		JSONArray keyMatchGroup = new JSONArray();
+	public void probe(List<Extended> list, String key) {
 		HashBucketComparator c = new HashBucketComparator();
-		otherGroup.clear();
-		keyMatchGroup.clear();
 		for (int index = 0; index < list.size(); index++) {
-			JSONObject tuple = (JSONObject) list.get(index);
+			Extended rec= list.get(index);
+			JSONObject tuple =rec.getObj();
 			java.lang.Long id = (Long) tuple.get(key);
 			List<HashBucket> bucketList = computeBucketAddress(tuple, key);
 			// here is a little different from algorithm described in paper
@@ -82,8 +79,8 @@ public class MQJoinAdvanced extends BaseMQJoin {
 			// can do this in one loop
 
 			HashBucket bucket = bucketList.get(Collections.binarySearch(bucketList, new HashBucket(id, sid), c));
-			BitSet bs1 = bucket.getQidSet();
-			BitSet bs2 = super.probeQID[index];
+			BitSet bs1 = bucket.getRecordPtr().getBs();
+			BitSet bs2 = rec.getBs();
 			BitSet result = new BitSet(bs1.size());
 //			System.out.println("index=" + index + "|id:" + id + "|has:" + hash(id) + "|bs1:" + bs1.toString() + "|bs2:"
 //					+ bs2.toString());
@@ -93,7 +90,6 @@ public class MQJoinAdvanced extends BaseMQJoin {
 				System.out.println(result.toString() + "|R:" + bucket.getRecordPtr().toString() + "|S:"
 						+ super.largerSet.get(index).toString());
 			}
-
 		}
 	}
 }

@@ -7,4 +7,16 @@ public class Wrapped {
 		this.c=c;
 		this.i=i;
 	}
+	public Node getC() {
+		return c;
+	}
+	public void setC(Node c) {
+		this.c = c;
+	}
+	public int getI() {
+		return i;
+	}
+	public void setI(int i) {
+		this.i = i;
+	}
 }

@@ -1,5 +1,7 @@
 package mq;
 
+import java.util.List;
+
 import org.json.simple.JSONArray;
 
 public class BaseMQJoin extends AbstractMQJoin {
@@ -8,13 +10,13 @@ public class BaseMQJoin extends AbstractMQJoin {
 	}
 
 	@Override
-	public void build(JSONArray list, String key) {
+	public void build(List<Extended> list, String key) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void probe(JSONArray list, String key) {
+	public void probe(List<Extended> list, String key) {
 		// TODO Auto-generated method stub
 
 	}

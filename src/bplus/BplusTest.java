@@ -37,6 +37,7 @@ public class BplusTest {
 		ts = System.currentTimeMillis();
 		for (Integer i = 0; i < n; i++) {
 			Wrapped w = tree.find(i);
+			Object j=w.getC().getChildren().get(i);
 		}
 		spent = System.currentTimeMillis() - ts;
 		System.out.println("time cost by bplus tree:"+spent);
